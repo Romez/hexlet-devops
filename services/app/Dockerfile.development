@@ -1,0 +1,12 @@
+FROM php:7.3
+
+RUN docker-php-ext-install bcmath
+
+ENV PROJECT_ROOT /usr/src/app
+
+RUN apt-get update && apt-get install -y \
+    zip
+
+RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+
+WORKDIR $PROJECT_ROOT
