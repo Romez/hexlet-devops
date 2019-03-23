@@ -10,4 +10,4 @@ app-bash:
 	docker-compose run app bash
 
 app-setup: app-build
-	docker-compose run app npm ci && docker-compose run app npm run prod
+	docker-compose run app composer install && docker-compose run app npm ci && docker-compose run app npm run prod
