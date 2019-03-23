@@ -1,12 +1,15 @@
-FROM php:7.3
+FROM php:7.3-fpm
 
 RUN docker-php-ext-install bcmath
 
 ENV PROJECT_ROOT /usr/src/app
+
+WORKDIR $PROJECT_ROOT
 
 RUN apt-get update && apt-get install -y \
     zip
 
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
-WORKDIR $PROJECT_ROOT
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
+RUN apt-get update && apt-get install -y nodejs

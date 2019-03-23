@@ -2,24 +2,23 @@ version: '3.3'
 
 services:
   app:
+    container_name: app
     build:
       context: services/app
       dockerfile: Dockerfile.development
-#    command: php artisan migrate
-    ports:
-      - "8080:80"
     volumes:
       - "~/.bash_history:/.bash_history"
       - "./services/app:/usr/src/app:cached"
       - "/tmp:/tmp:delegated"
+    env_file:
+      - .env
 
-  composer:
-    container_name: composer
-    restart: 'no'
-    image: composer
-#    working_dir: /usr//html
-    #  command: install
+  nginx:
+    build:
+      context: services/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
     depends_on:
       - app
-#    volumes_from:
-#      - app
+
