@@ -7,7 +7,9 @@ app-build:
 	docker-compose build
 
 app-bash:
-	docker-compose run app bash
+	docker-compose run --user=$(USER) app bash
 
 app-setup: app-build
-	docker-compose run app composer install && docker-compose run app npm ci && docker-compose run app npm run prod
+	docker-compose run --user=$(USER) app composer install
+	docker-compose run --user=$(USER) app npm ci
+
