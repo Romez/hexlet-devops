@@ -22,6 +22,8 @@ services:
       - "./services/nginx/articles.conf:/etc/nginx/conf.d/articles.conf"
       - "./services/app:/usr/src/app"
     ports:
-      - "8080:80"
+      - "${PORT}:80"
+    env_file:
+      - .env
     depends_on:
       - app
