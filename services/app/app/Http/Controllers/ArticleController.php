@@ -28,7 +28,7 @@ class ArticleController extends Controller
         $data = $this->validate($request, [
             'body' => 'required',
             'name' => 'required',
-            'image' => 'required'
+            'image' => 'nullable'
         ]);
 
         $this->articleService->createArticle($data);

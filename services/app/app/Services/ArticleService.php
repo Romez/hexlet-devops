@@ -22,14 +22,9 @@ class ArticleService implements ArticleServiceInterface
     {
         $article = new Article($data);
 
-        eval(\Psy\sh());
-
-//        $article->name = $data['name'];
-//        $article->body = $data['body'];
-//        $article->image = $data['image'];
         $article->save();
 
-        StoreCover::dispatch($article);
+//        StoreCover::dispatch($article);
         return true;
     }
 
