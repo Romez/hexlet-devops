@@ -1,0 +1,41 @@
+---
+- hosts: webservers
+  gather_facts: false
+  vars_prompt:
+    - name: "articles_image_tag"
+      prompt: "Articles image tag"
+      private: false
+
+  tasks:
+    - name: Create a network
+      docker_network:
+        name: "{{ articles_docker_network }}"
+
+    - name: download nginx image
+      docker_image:
+        name: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
+
+    - name: download app image
+      docker_image:
+        name: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
+
+    - name: start nginx
+      docker_container:
+        recreate: true
+        name: nginx
+        image: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "80:80"
+        networks:
+          - name: "{{ articles_docker_network }}"
+
+    - name: start app
+      docker_container:
+        recreate: yes
+        name: app
+        image: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
+        state: started
+        networks:
+          - name: "{{ articles_docker_network }}"

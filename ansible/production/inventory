@@ -1,1 +1,2 @@
-localhost ansible_connection=local
+[webservers]
+128.199.185.170
