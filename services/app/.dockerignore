@@ -3,3 +3,8 @@ log
 vendor
 node_modules
 storage/logs/*.log
+.npm
+.config
+.composer
+public/css
+public/js

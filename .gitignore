@@ -6,3 +6,6 @@ secrets.auto.tfvars
 *.retry
 *.backup
 node_modules
+tmp
+.composer
+.config

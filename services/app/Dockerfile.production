@@ -1,0 +1,28 @@
+FROM php:7.3-fpm
+
+RUN apt-get update && apt-get install -y \
+    zip
+
+RUN docker-php-ext-install bcmath pdo_mysql
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \
+    && apt-get update && apt-get install -y nodejs
+
+ENV PROJECT_ROOT /usr/src/app
+WORKDIR $PROJECT_ROOT
+
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN npm ci
+
+COPY composer.json composer.lock ./
+
+RUN composer install --no-scripts --no-autoloader
+
+COPY . ./
+RUN composer dump-autoload --optimize && composer run-script post-autoload-dump
+
+RUN npm run prod
