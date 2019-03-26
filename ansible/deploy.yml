@@ -15,6 +15,11 @@
       docker_image:
         name: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
 
+    - name: download db
+      docker_image:
+        name: mysql
+
+
     - name: download app image
       docker_image:
         name: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
