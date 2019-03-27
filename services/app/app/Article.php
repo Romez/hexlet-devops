@@ -25,7 +25,8 @@ class Article extends Model
         return true;
     }
 
-    public function setImageAttribute($image = null) {
+    public function setImageAttribute($image = null)
+    {
         $this->image = $image;
 
         if (is_null($image)) {
