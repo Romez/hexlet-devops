@@ -27,19 +27,21 @@ class ArticleControllerTest extends TestCase
         $this->assertEquals($body, $article->body);
     }
 
-    public function testReadArticle() {
+    public function testReadArticle()
+    {
         factory(Article::class, 10)->create();
 
         $this->get(route('articles.index'))->assertStatus(200);
     }
 
-    public function testUpdateArticle() {
+    public function testUpdateArticle()
+    {
         $article = factory(Article::class)->create();
         $articleId = $article->id;
 
         $requestBody = [
             'name' => $this->faker->sentence(),
-            'body' => $this->faker->paragraph()
+            'body' => $this->faker->paragraph(),
         ];
 
         $this->patch(route('articles.update', ['id' => $articleId]), $requestBody);
@@ -50,7 +52,8 @@ class ArticleControllerTest extends TestCase
         $this->assertEquals($requestBody['body'], $article->body);
     }
 
-    public function testDeleteArticle() {
+    public function testDeleteArticle()
+    {
         $article = factory(Article::class)->create();
         $articleId = $article->id;
 

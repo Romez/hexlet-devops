@@ -24,7 +24,6 @@ class ArticleService implements ArticleServiceInterface
 
         $article->save();
 
-
 //        StoreCover::dispatch($article);
         return true;
     }
