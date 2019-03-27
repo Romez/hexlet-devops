@@ -1,5 +1,5 @@
 ansible_python_interpreter: "/usr/bin/env python3"
-basic_port: 8080
+port: 8080
 articles_nginx_image_name: "romezzz/articles-nginx"
 articles_app_image_name: "romezzz/articles-app"
 articles_docker_network: "articles-network"

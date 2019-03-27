@@ -16,6 +16,7 @@ services:
       - .env
     depends_on:
       - db
+      - nginx
 
   nginx:
     build:
@@ -23,13 +24,11 @@ services:
       dockerfile: Dockerfile
     volumes:
       - "./services/nginx/articles.conf:/etc/nginx/conf.d/articles.conf"
-      - "./services/app:/usr/src/app"
+      - "./services/app/public:/usr/src/app/public"
     ports:
       - "${PORT}:80"
     env_file:
       - .env
-    depends_on:
-      - app
 
   db:
     image: mysql
