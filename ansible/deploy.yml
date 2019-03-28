@@ -33,6 +33,7 @@
         recreate: yes
         name: db
         image: mysql
+        command: --default-authentication-plugin=mysql_native_password
         env:
           MYSQL_DATABASE: "{{ vault_db_name }}"
           MYSQL_USER: "{{ vault_db_user }}"
@@ -58,7 +59,7 @@
         recreate: yes
         name: nginx
         image: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
-        state: started
+        state: startde
         restart_policy: always
         published_ports:
           - "80:80"
