@@ -7,6 +7,11 @@
       private: false
 
   tasks:
+    - template:
+        src: environment.j2
+        dest: ".env"
+        tags: env
+
     - name: Create a network
       docker_network:
         name: "{{ articles_docker_network }}"
@@ -19,22 +24,24 @@
       docker_image:
         name: mysql
 
-
     - name: download app image
       docker_image:
         name: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
 
-    - name: start nginx
+    - name: start db
       docker_container:
-        recreate: true
-        name: nginx
-        image: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
-        state: started
-        restart_policy: always
-        published_ports:
-          - "80:80"
+        recreate: yes
+        name: db
+        image: mysql
+        env:
+          MYSQL_DATABASE: "{{ vault_db_name }}"
+          MYSQL_USER: "{{ vault_db_user }}"
+          MYSQL_ROOT_PASSWORD: "{{ vault_db_password }}"
+          MYSQL_PASSWORD: "{{ vault_db_password }}"
+        volumes:
+          - db_data:/var/lib/mysql
         networks:
-          - name: "{{ articles_docker_network }}"
+        - name: "{{ articles_docker_network }}"
 
     - name: start app
       docker_container:
@@ -42,5 +49,18 @@
         name: app
         image: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
         state: started
+        env_file: "/root/.env"
+        networks:
+          - name: "{{ articles_docker_network }}"
+
+    - name: start nginx
+      docker_container:
+        recreate: yes
+        name: nginx
+        image: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "80:80"
         networks:
           - name: "{{ articles_docker_network }}"
