@@ -13,4 +13,3 @@ app-setup: development-setup-env app-build
 	docker-compose run --user=$(USER) app composer install
 	docker-compose run --user=$(USER) app npm ci
 	docker-compose run app php artisan migrate
-	docker-compose run --user=$(USER) app php artisan key:generate

@@ -1,8 +1,8 @@
 ---
-- hosts: all
+- hosts: webservers
   gather_facts: no
 
-  pre_tasks:
+  tasks:
     - apt:
         update_cache: true
         name:
@@ -15,6 +15,48 @@
         name: docker
       become: true
 
+    - block:
+      - name: generate locale
+        locale_gen:
+          name: en_US.UTF-8
+        tags: [locale]
+
+      - name: set locale
+        become: yes
+        shell: update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8
+        tags: [locale]
+
+      - meta: reset_connection
+
     - pip:
         name: docker
       become: true
+
+    - template:
+        src: environment.j2
+        dest: ".env"
+      tags: env
+
+    - name: Create a network
+      docker_network:
+        name: "{{ articles_docker_network }}"
+
+    - name: create db
+      docker_container:
+        env:
+          MYSQL_DATABASE: "{{ vault_db_name }}"
+          MYSQL_USER: "{{ vault_db_user }}"
+          MYSQL_ROOT_PASSWORD: "{{ vault_db_password }}"
+          MYSQL_PASSWORD: "{{ vault_db_password }}"
+        image: mysql
+        name: db
+        state: started
+        recreate: yes
+        restart_policy: always
+        networks:
+          - name: "{{ articles_docker_network }}"
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+          - db_data:/var/lib/mysql
+      tags: create_db
+      run_once: yes
