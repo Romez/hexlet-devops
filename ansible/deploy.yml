@@ -21,19 +21,14 @@
 
     - name: run migrations
       docker_container:
-        env:
-          MYSQL_DATABASE: "{{ vault_db_name }}"
-          MYSQL_USER: "{{ vault_db_user }}"
-          MYSQL_ROOT_PASSWORD: "{{ vault_db_password }}"
-          MYSQL_PASSWORD: "{{ vault_db_password }}"
-        image: mysql
+        image: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
         name: app_migrations
+        recreate: yes
+        state: started
+        env_file: "/root/.env"
+        command: "php artisan migrate --force"
         networks:
           - name: "{{ articles_docker_network }}"
-        recreate: yes
-        command: "php artisan migrate"
-        volumes:
-          - db_data:/var/lib/mysql
       run_once: yes
 
     - name: start app
