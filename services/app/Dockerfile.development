@@ -7,7 +7,7 @@ RUN docker-php-ext-install bcmath pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV PROJECT_ROOT /usr/src/app
+ENV PROJECT_ROOT /app
 WORKDIR $PROJECT_ROOT
 
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \

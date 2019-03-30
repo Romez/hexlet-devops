@@ -29,9 +29,8 @@
         image: mysql
         name: app_migrations
         networks:
-        - name: "{{ articles_docker_network }}"
+          - name: "{{ articles_docker_network }}"
         recreate: yes
-
         command: "php artisan migrate"
         volumes:
           - db_data:/var/lib/mysql
@@ -52,7 +51,7 @@
         recreate: yes
         name: nginx
         image: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
-        state: startde
+        state: started
         restart_policy: always
         published_ports:
           - "80:80"

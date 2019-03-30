@@ -8,10 +8,10 @@ services:
       dockerfile: Dockerfile.development
     volumes:
       - "~/.bash_history:/.bash_history"
-      - "./services/app:/usr/src/app"
+      - "./services/app:/app"
       - "/tmp:/tmp:delegated"
       - "./services/app/.npm:/.npm"
-      - ".env:/usr/src/app/.env"
+      - ".env:/app/.env"
     env_file:
       - .env
     depends_on:
@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - "./services/nginx/articles.conf:/etc/nginx/conf.d/default.conf"
-      - "./services/app/public:/usr/src/app/public"
+      - "./services/app/public:/app/public"
     ports:
       - "${PORT}:80"
     env_file:
