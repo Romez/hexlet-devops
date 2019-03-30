@@ -38,6 +38,8 @@
         image: "{{ articles_app_image_name }}:{{ articles_image_tag }}"
         state: started
         env_file: "/root/.env"
+        volumes:
+          - static:/app/public:ro
         networks:
           - name: "{{ articles_docker_network }}"
 
@@ -48,6 +50,8 @@
         image: "{{ articles_nginx_image_name }}:{{ articles_image_tag }}"
         state: started
         restart_policy: always
+        volumes:
+          - static:/app/public:ro
         published_ports:
           - "80:80"
         networks:

@@ -2,7 +2,6 @@
 .env
 secrets.auto.tfvars
 .terraform
-*.tfstate
 *.retry
 *.backup
 node_modules
