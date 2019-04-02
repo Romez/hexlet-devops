@@ -11,7 +11,6 @@ services:
       - "./services/app:/app"
       - "/tmp:/tmp:delegated"
       - "./services/app/.npm:/.npm"
-      - ".env:/app/.env"
     env_file:
       - .env
     depends_on:
