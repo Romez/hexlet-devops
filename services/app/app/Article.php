@@ -18,7 +18,7 @@ class Article extends Model
         $article = $this->find($data['id']);
         $article->name = $data['name'];
         $article->body = $data['body'];
-        $article->image = $data['image'];
+//        $article->image = $data['image'] ?? null;
 
         $article->save();
 
