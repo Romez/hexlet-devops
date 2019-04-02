@@ -5,14 +5,13 @@ services:
     container_name: app
     build:
       context: services/app
-#      dockerfile: Dockerfile.development
-      dockerfile: Dockerfile.production
-#    volumes:
-#      - "~/.bash_history:/.bash_history"
-#      - "./services/app:/app"
-#      - "/tmp:/tmp:delegated"
-#      - "./services/app/.npm:/.npm"
-#      - ".env:/app/.env"
+      dockerfile: Dockerfile.development
+    volumes:
+      - "~/.bash_history:/.bash_history"
+      - "./services/app:/app"
+      - "/tmp:/tmp:delegated"
+      - "./services/app/.npm:/.npm"
+      - ".env:/app/.env"
     env_file:
       - .env
     depends_on:
@@ -22,9 +21,9 @@ services:
     build:
       context: services/nginx
       dockerfile: Dockerfile
-#    volumes:
-#      - "./services/nginx/articles.conf:/etc/nginx/conf.d/default.conf"
-#      - "./services/app/public:/app/public"
+    volumes:
+      - "./services/nginx/articles.conf:/etc/nginx/conf.d/default.conf"
+      - "./services/app/public:/app/public"
     ports:
       - "${PORT}:80"
     env_file:
