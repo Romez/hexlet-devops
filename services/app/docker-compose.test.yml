@@ -1,20 +1,14 @@
 version: '3.3'
+
 services:
   sut:
     build:
       context: .
       dockerfile: Dockerfile.production
-    environment:
-      - APP_ENV=testing
-      - TELESCOPE_ENABLED=false
-      - DB_HOST=db
-      - DB_DATABASE=test_db
-      - DB_PASSWORD=secret
-      - DB_USERNAME=dev
-
-    command: vendor/bin/phpunit
+    env_file: ./.env.testing
     depends_on:
       - db
+    command: vendor/bin/phpunit
 
   db:
     image: mysql
@@ -25,5 +19,5 @@ services:
     environment:
       - MYSQL_DATABASE=test_db
       - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_USER=dev
+      - MYSQL_USER=tester
       - MYSQL_PASSWORD=secret
