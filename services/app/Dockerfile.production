@@ -25,5 +25,6 @@ COPY . ./
 RUN composer dump-autoload --optimize && composer run-script post-autoload-dump
 
 RUN chown -R www-data:www-data $PROJECT_ROOT/storage
+RUN chmod +x $PROJECT_ROOT/wait-for-it.sh
 
 RUN npm run prod

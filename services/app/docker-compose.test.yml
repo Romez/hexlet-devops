@@ -6,9 +6,11 @@ services:
       context: .
       dockerfile: Dockerfile.production
     env_file: ./.env.testing
+    volumes:
+      - ./wait-for-db.sh:/app/wait-for-db.sh
     depends_on:
       - db
-    command: vendor/bin/phpunit
+    command: ["./wait-for-db.sh", "vendor/bin/phpunit"]
 
   db:
     image: mysql
