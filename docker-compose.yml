@@ -11,12 +11,12 @@ services:
       - "./services/app:/app"
       - "/tmp:/tmp:delegated"
       - "./services/app/.npm:/.npm"
-    env_file:
-      - .env
+      - ".env:/app/.env"
     depends_on:
       - db
 
   nginx:
+    container_name: nginx
     build:
       context: services/nginx
       dockerfile: Dockerfile
@@ -33,12 +33,18 @@ services:
   db:
     image: mysql
     restart: always
+    container_name: db
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
+#      - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+#      - MYSQL_USER=${DB_USERNAME}
+#      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./mysql-init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
 
 volumes:
   dbdata:

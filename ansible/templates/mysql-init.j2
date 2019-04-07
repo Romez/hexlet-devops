@@ -1,0 +1,9 @@
+CREATE USER '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';
+CREATE DATABASE {{ db_name }};
+GRANT ALL PRIVILEGES ON {{ db_name }}.* TO '{{ db_user }}'@'%';
+
+{% if app_env == 'local' %}
+CREATE USER IF NOT EXISTS '{{ test_db_user }}'@'%' IDENTIFIED BY '{{ test_db_password }}';
+CREATE DATABASE {{ test_db_name }};
+GRANT ALL PRIVILEGES ON {{ test_db_name }}.* TO '{{ test_db_user }}'@'%';
+{% endif %}

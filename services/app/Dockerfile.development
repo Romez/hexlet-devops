@@ -1,14 +1,15 @@
 FROM php:7.3-fpm
 
 RUN apt-get update && apt-get install -y \
-    zip
+    zip \
+    mysql-client
 
 RUN docker-php-ext-install bcmath pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV PROJECT_ROOT /app
-WORKDIR $PROJECT_ROOT
-
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \
     && apt-get update && apt-get install -y nodejs
+
+ENV PROJECT_ROOT /app
+WORKDIR $PROJECT_ROOT

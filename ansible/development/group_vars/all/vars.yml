@@ -1,2 +1,11 @@
 app_env: local
 
+db_name: local_db
+db_user: dev
+db_password: secret
+
+test_db_name: test_db
+test_db_user: dev
+test_db_password: secret
+
+app_key: base64:m8COdU9FH1IeaTgITmFiNn/NFgxi/u2NiYJ2REIXOr8=

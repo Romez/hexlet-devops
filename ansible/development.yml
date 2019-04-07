@@ -6,3 +6,7 @@
         src: environment.j2
         dest: '../.env'
       tags: env
+
+    - template:
+        src: mysql-init.j2
+        dest: '../mysql-init.sql'
