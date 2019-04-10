@@ -24,6 +24,9 @@ class StoreCover implements ShouldQueue
 
     public function handle()
     {
-        $this->article->transition('save_image');
+        if ($this->article->transitionAllowed('save_image')) {
+            $this->article->transition('save_image');
+            $this->article->save();
+        }
     }
 }

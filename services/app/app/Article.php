@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Statable;
+use function Stringy\create as s;
 
 class Article extends Model
 {
@@ -27,12 +28,18 @@ class Article extends Model
 
     public function setImageAttribute($image = null)
     {
-        $this->image = $image;
-
         if (is_null($image)) {
-            $this->state = 'img_default';
+            $this->attributes['state'] = 'img_default';
         } else {
-            $this->state = 'img_not_saved';
+            $this->attributes['image'] = $image;
+            $this->attributes['state'] = 'img_not_saved';
         }
+    }
+
+    public function getImagePathAttribute()
+    {
+        return s('articles/')
+            ->append($this->id)
+            ->append('/');
     }
 }

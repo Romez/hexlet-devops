@@ -3,21 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\Services\ArticleServiceInterface;
+use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    /**
-     * @var ArticleServiceInterface
-     */
-    private $articleService;
-
-    public function __construct(ArticleServiceInterface $articleService)
-    {
-        $this->articleService = $articleService;
-    }
-
     public function create()
     {
         return view('article.create');
@@ -28,10 +18,10 @@ class ArticleController extends Controller
         $data = $this->validate($request, [
             'body' => 'required',
             'name' => 'required',
-            'image' => 'nullable'
+            'image' => 'nullable|url'
         ]);
 
-        $this->articleService->createArticle($data);
+        ArticleService::createArticle($data);
 
         return redirect('/')->with('success', 'New support article has been created!');
     }

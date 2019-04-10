@@ -3,39 +3,38 @@ namespace App\Services;
 
 use App\Article;
 use App\Jobs\StoreCover;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use function Stringy\create as s;
 
-class ArticleService implements ArticleServiceInterface
+class ArticleService
 {
-    /**
-     * @var ImageManager
-     */
-    private $imageManager;
-
-    public function __construct(ImageManager $imageManager)
-    {
-        $this->imageManager = $imageManager;
-    }
-
-    public function createArticle($data)
+    public static function createArticle($data)
     {
         $article = new Article($data);
-
         $article->save();
 
-//        StoreCover::dispatch($article);
+        if ($article->transitionAllowed('save_image')) {
+            StoreCover::dispatch($article);
+        }
+
         return true;
     }
 
-    public function saveImage(Article $article) {
+    public static function saveImage(ImageManager $imageManager, Article $article) {
         $imgUrl = $article->image;
 
-        $image = $this->imageManager->make($imgUrl);
+        $image = $imageManager->make($imgUrl);
 
         $imageName = s(time())->append('.jpg');
-        $imagePath = s(storage_path('app/public/articles/'))->append($imageName);
+        $imagePath = $article->imagePath->append($imageName);
 
-        $image->save($imagePath);
+        Storage::makeDirectory($article->imagePath);
+
+        $image->save(Storage::path($imagePath));
+
+        $article->image = $imageName;
+
+        return true;
     }
 }
